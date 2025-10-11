@@ -1,0 +1,1 @@
+Developed a voice-based journal system using Angular (frontend) and NestJS (backend) with Azure Communication Service for real-time audio and Azure Cognitive Services for transcription, grammar correction, and sentiment analysis.
