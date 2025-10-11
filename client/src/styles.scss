@@ -1,1 +1,46 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+:root {
+  --color-red: oklch(61.42% 0.238 15.34);
+  --color-pink: oklch(69.02% 0.277 332.77);
+  --color-orange-red: oklch(63.32% 0.24 31.68);
+  --color-bright-blue: oklch(51.01% 0.274 263.83);
+  --color-electric-violet: oklch(53.18% 0.28 296.97);
+  --color-french-violet: oklch(47.66% 0.246 305.88);
+
+  --color-black: oklch(19.37% 0.006 300.98);
+  --color-darkgray: oklch(36.98% 0.014 302.71);
+  --color-lightgray: oklch(70.9% 0.015 304.04);
+
+  // Background colors
+  --red-to-pink-to-purple-vertical-gradient: linear-gradient(
+    180deg,
+    var(--color-orange-red) 0%,
+    var(--color-pink) 50%,
+    var(--color-electric-violet) 100%
+  );
+
+  --red-to-pink-to-purple-horizontal-gradient: linear-gradient(
+    90deg,
+    var(--color-orange-red) 0%,
+    var(--color-pink) 50%,
+    var(--color-electric-violet) 100%
+  );
+
+  font-family: 'Lato', sans-serif;
+  --font-weigth-bold: 700;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
