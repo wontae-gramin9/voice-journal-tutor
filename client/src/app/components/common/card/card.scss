@@ -1,0 +1,19 @@
+@use '@angular/material' as mat;
+@use 'variables' as var;
+
+.app-card {
+  border-radius: var.$border-radius;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+
+  @include mat.card-overrides(
+    (
+      title-text-weight: var.$font-weigth-bold,
+      title-text-size: var(--font-size-xlarge),
+      outlined-container-color: var(--color-white),
+      outlined-outline-color: var(--color-darkgray),
+      outlined-outline-width: 1px,
+    )
+  );
+}
