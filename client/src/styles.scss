@@ -1,16 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import 'material-symbols/outlined.css';
 
 :root {
+  --color-light-red: oklch(76.42% 0.238 15.34);
   --color-red: oklch(61.42% 0.238 15.34);
+  --color-dark-red: oklch(46.42% 0.238 15.34);
+
+  --color-light-pink: oklch(84.02% 0.277 332.77);
   --color-pink: oklch(69.02% 0.277 332.77);
+  --color-dark-pink: oklch(54.02% 0.277 332.77);
+
+  --color-light-orange-red: oklch(78.32% 0.24 31.68);
   --color-orange-red: oklch(63.32% 0.24 31.68);
+  --color-dark-orange-red: oklch(48.32% 0.24 31.68);
+
+  --color-light-bright-blue: oklch(66.01% 0.274 263.83);
   --color-bright-blue: oklch(51.01% 0.274 263.83);
-  --color-electric-violet: oklch(53.18% 0.28 296.97);
-  --color-french-violet: oklch(47.66% 0.246 305.88);
+  --color-dark-bright-blue: oklch(36.01% 0.274 263.83);
+
+  --color-light-violet: oklch(68.18% 0.28 296.97);
+  --color-violet: oklch(53.18% 0.28 296.97);
+  --color-dark-violet: oklch(38.18% 0.28 296.97);
 
   --color-black: oklch(19.37% 0.006 300.98);
-  --color-darkgray: oklch(36.98% 0.014 302.71);
-  --color-lightgray: oklch(70.9% 0.015 304.04);
+  --color-light-black: oklch(29.37% 0.006 300.98);
+  --color-dark-gray: oklch(36.98% 0.014 302.71);
+  --color-gray: oklch(49.98% 0.014 302.71);
+  --color-light-gray: oklch(70.9% 0.015 304.04);
+  --color-dark-white: oklch(90% 0 0);
   --color-white: #ffffff;
 
   // Background colors
@@ -18,14 +35,14 @@
     180deg,
     var(--color-orange-red) 0%,
     var(--color-pink) 50%,
-    var(--color-electric-violet) 100%
+    var(--color-violet) 100%
   );
 
   --red-to-pink-to-purple-horizontal-gradient: linear-gradient(
     90deg,
     var(--color-orange-red) 0%,
     var(--color-pink) 50%,
-    var(--color-electric-violet) 100%
+    var(--color-violet) 100%
   );
 
   font-family: 'Lato', sans-serif;
@@ -47,6 +64,8 @@
 * {
   margin: 0;
   padding: 0;
-  height: 100%;
-  width: 100%;
+}
+
+mat-icon {
+  cursor: pointer;
 }

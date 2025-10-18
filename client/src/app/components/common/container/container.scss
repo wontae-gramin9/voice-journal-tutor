@@ -4,12 +4,13 @@
 .app-container {
   border-radius: var.$border-radius;
   padding: 0.5rem;
+  height: 100%;
 
   @include mat.card-overrides(
     (
       title-text-size: var(--font-size-medium),
       outlined-container-color: var(--color-white),
-      outlined-outline-color: var(--color-darkgray),
+      outlined-outline-color: var(--color-dark-gray),
     )
   );
 }
