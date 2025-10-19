@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { IconButton } from '@components/common/icon-button/icon-button';
 
 @Component({
   selector: 'app-header',
-  imports: [MatIcon],
+  imports: [IconButton],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })

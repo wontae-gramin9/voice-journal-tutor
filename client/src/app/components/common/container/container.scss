@@ -1,10 +1,11 @@
 @use '@angular/material' as mat;
-@use 'variables' as var;
+@use 'variables' as *;
 
 .app-container {
-  border-radius: var.$border-radius;
+  border-radius: $border-radius;
   padding: 0.5rem;
   height: 100%;
+  gap: 1rem;
 
   @include mat.card-overrides(
     (

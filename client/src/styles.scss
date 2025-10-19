@@ -52,6 +52,16 @@
   --font-size-large: 1.25rem;
   --font-size-xlarge: 1.5rem;
 
+  // Shadows
+  --box-shadow-soft:
+    0 1px 3px 0 oklch(0% 0 0 / 0.1), 0 1px 2px -1px oklch(0% 0 0 / 0.1); /* 좁고 진한 그림자 */
+
+  --box-shadow-medium:
+    0 4px 6px -1px oklch(0% 0 0 / 0.12), 0 2px 4px -2px oklch(0% 0 0 / 0.12);
+
+  --box-shadow-strong:
+    0 10px 15px -3px oklch(0% 0 0 / 0.15), 0 4px 6px -4px oklch(0% 0 0 / 0.15);
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -64,8 +74,4 @@
 * {
   margin: 0;
   padding: 0;
-}
-
-mat-icon {
-  cursor: pointer;
 }
