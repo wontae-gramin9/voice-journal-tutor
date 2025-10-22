@@ -1,42 +1,21 @@
 <section class="home-page">
   <app-card class="card journal-tutor">
     <app-container>
-      <h2>Voice Journal & Tutor</h2>
-      <app-box>
-        <app-icon-button iconName="mic"></app-icon-button>
-        <p>Record Voice Journal</p>
-      </app-box>
-    </app-container>
-
-    <app-container>
       <h3>Record Voice Journal</h3>
-      <app-box>
-        <p>2025-10-03.wav</p>
-        <app-icon-button iconName="play_arrow"></app-icon-button>
-      </app-box>
-      <app-box>
-        <p>2025-10-04.wav</p>
-        <app-icon-button iconName="play_arrow"></app-icon-button>
-      </app-box>
+      <app-recent-recording />
+      <app-recent-recording />
+      <app-recent-recording />
+      <app-recent-recording />
     </app-container>
   </app-card>
   <app-card class="card record-correct">
     <app-container>
       <h2>Record & Correct</h2>
-
-      <app-box>
-        <app-icon-button iconName="mic"></app-icon-button>
-        <app-icon-button iconName="pause_circle"></app-icon-button>
-        <app-icon-button iconName="stop"></app-icon-button>
-      </app-box>
-      <app-box>
-        <app-icon-button iconName="play_arrow"></app-icon-button>
-        <app-icon-button iconName="pause_circle"></app-icon-button>
-      </app-box>
+      <app-audio-recorder />
+      <app-audio-player />
     </app-container>
     <app-container>
       <h3>Transcribed Text</h3>
-      <!-- text box -->
       <app-textarea>The day was good</app-textarea>
     </app-container>
     <app-container>
@@ -45,7 +24,7 @@
     </app-container>
     <app-container>
       <h3>Sentiment</h3>
-      <p>Positive</p>
+      <app-sentiment></app-sentiment>
     </app-container>
   </app-card>
   <app-card class="card sentiment-history">
