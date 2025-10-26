@@ -8,12 +8,12 @@
     justify-content: start;
   }
 
-  .record-correct {
-    flex: 2;
+  .journal-tutor {
+    flex: 1;
   }
 
-  .journal-tutor,
+  .record-correct,
   .sentiment-history {
-    flex: 1;
+    flex: 2;
   }
 }

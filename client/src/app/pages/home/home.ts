@@ -6,6 +6,7 @@ import { AudioRecorder } from '@components/organism/audio-recorder/audio-recorde
 import { AudioPlayer } from '@components/organism/audio-player/audio-player';
 import { RecentRecording } from '@components/organism/recent-recording/recent-recording';
 import { Sentiment } from '@components/organism/sentiment/sentiment';
+import { SentimentGraph } from '@components/organism/sentiment-graph/sentiment-graph';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,7 @@ import { Sentiment } from '@components/organism/sentiment/sentiment';
     AudioPlayer,
     RecentRecording,
     Sentiment,
+    SentimentGraph,
   ],
   templateUrl: './home.html',
   styleUrl: './home.scss',
