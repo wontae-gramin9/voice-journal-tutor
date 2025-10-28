@@ -1,0 +1,19 @@
+.home-page {
+  display: flex;
+  gap: 1rem;
+  height: 100%;
+  .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+  }
+
+  .journal-tutor {
+    flex: 1;
+  }
+
+  .record-correct,
+  .sentiment-history {
+    flex: 2;
+  }
+}

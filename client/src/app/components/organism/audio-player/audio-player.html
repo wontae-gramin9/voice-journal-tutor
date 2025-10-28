@@ -1,0 +1,16 @@
+<app-box>
+  <div class="audio-player">
+    <input type="range" min="0" class="audio-slider" />
+    <div class="display">
+      <p class="display__audioname">2025-10-03.wav</p>
+      <p class="display__time">
+        <span>{{ currentTime }}</span> /
+        <span>{{ totalDuration }}</span>
+      </p>
+    </div>
+    <div class="controls">
+      <app-icon-button iconName="play_arrow"></app-icon-button>
+      <app-icon-button iconName="pause_circle"></app-icon-button>
+    </div>
+  </div>
+</app-box>
