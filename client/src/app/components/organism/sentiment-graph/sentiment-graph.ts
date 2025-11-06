@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ChartConfiguration } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
-import { getCssValues } from 'utils/css';
+import { getCssValues } from '@utils/css';
 
 @Component({
   selector: 'app-sentiment-graph',

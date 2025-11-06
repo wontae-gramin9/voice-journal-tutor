@@ -3,9 +3,12 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./src/app",
+    "baseUrl": "./src/",
     "paths": {
-      "@components/*": ["./components/*"]
+      "@components/*": ["./app/components/*"],
+      "@utils/*": ["./app/utils/*"],
+      "@services/*": ["./app/services/*"],
+      "@environments/*": ["./environments/*"]
     },
     "strict": true,
     "noImplicitOverride": true,
