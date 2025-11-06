@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Card } from '@components/common/card/card';
 import { Container } from '@components/common/container/container';
 import { Textarea } from '@components/common/textarea/textarea';
@@ -7,6 +7,7 @@ import { AudioPlayer } from '@components/organism/audio-player/audio-player';
 import { RecentRecording } from '@components/organism/recent-recording/recent-recording';
 import { Sentiment } from '@components/organism/sentiment/sentiment';
 import { SentimentGraph } from '@components/organism/sentiment-graph/sentiment-graph';
+import { AudioService } from '@services/audio.service';
 
 @Component({
   selector: 'app-home',
@@ -23,4 +24,7 @@ import { SentimentGraph } from '@components/organism/sentiment-graph/sentiment-g
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
-export class Home {}
+export class Home {
+  private audioService = inject(AudioService);
+  recordedAudioUrl = this.audioService.recordedAudio;
+}

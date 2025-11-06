@@ -1,7 +1,22 @@
 <app-box>
   <div class="audio-recorder">
-    <app-icon-button iconName="mic"></app-icon-button>
-    <app-icon-button iconName="pause_circle"></app-icon-button>
-    <app-icon-button iconName="stop"></app-icon-button>
+    @if (isRecording) {
+      @if (isPaused) {
+        <app-icon-button
+          (click)="resumeRecording()"
+          iconName="restart_alt"></app-icon-button>
+      } @else {
+        <app-icon-button
+          (click)="pauseRecording()"
+          iconName="pause_circle"></app-icon-button>
+      }
+      <app-icon-button
+        (click)="stopRecording()"
+        iconName="stop"></app-icon-button>
+    } @else {
+      <app-icon-button
+        (click)="startRecording()"
+        iconName="mic"></app-icon-button>
+    }
   </div>
 </app-box>

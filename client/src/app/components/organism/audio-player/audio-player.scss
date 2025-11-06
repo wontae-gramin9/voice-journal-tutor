@@ -1,23 +1,32 @@
-.audio-player {
+.audio-display {
   display: flex;
   flex-direction: column;
   gap: 1rem;
   align-items: center;
-  justify-content: center;
   width: 100%;
-}
-
-.display {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  font-size: 0.875rem;
-}
-
-.controls {
-  display: flex;
   justify-content: center;
-  gap: 0.5rem;
+  &__info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &__controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    &--playback {
+      height: 31px;
+      font-family: lato;
+      border: 1px solid var(--color-dark-gray);
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
 }
 
 .audio-slider {

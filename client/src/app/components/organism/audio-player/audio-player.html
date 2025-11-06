@@ -1,16 +1,50 @@
 <app-box>
-  <div class="audio-player">
+  <div class="audio-display">
     <input type="range" min="0" class="audio-slider" />
-    <div class="display">
-      <p class="display__audioname">2025-10-03.wav</p>
-      <p class="display__time">
+    <div class="audio-display__info">
+      <p class="audio-display__info--audioname">2025-10-03.wav</p>
+      <p class="audio-display__info--time">
         <span>{{ currentTime }}</span> /
         <span>{{ totalDuration }}</span>
       </p>
     </div>
-    <div class="controls">
-      <app-icon-button iconName="play_arrow"></app-icon-button>
-      <app-icon-button iconName="pause_circle"></app-icon-button>
+    <audio
+      class="audio-display__player"
+      #audioElement
+      [src]="recordedAudioUrlContext.value"
+      preload="auto"></audio>
+
+    <div class="audio-display__controls">
+      <app-icon-button
+        (clicked)="jumpBackwardAudio()"
+        iconName="replay_5"></app-icon-button>
+      @if (isPlaying()) {
+        <app-icon-button
+          (clicked)="pauseAudio()"
+          iconName="pause_circle"></app-icon-button>
+      } @else {
+        <app-icon-button
+          (clicked)="playAudio()"
+          iconName="play_arrow"></app-icon-button>
+      }
+      <app-icon-button
+        (clicked)="jumpForwardAudio()"
+        iconName="forward_5"></app-icon-button>
+      <app-icon-button
+        (clicked)="downloadAudio()"
+        iconName="download"></app-icon-button>
+      <select
+        class="audio-display__controls--playback"
+        required
+        (change)="changePlaybackSpeed($event)">
+        @for (speed of playbackSpeeds; track speed) {
+          @if (speed === 1) {
+            <option selected [value]="speed">{{ speed }}x</option>
+          } @else {
+            <option [value]="speed">{{ speed }}x</option>
+          }
+        }
+      </select>
     </div>
   </div>
 </app-box>
