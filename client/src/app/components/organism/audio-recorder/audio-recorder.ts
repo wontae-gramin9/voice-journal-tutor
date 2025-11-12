@@ -15,7 +15,7 @@ export class AudioRecorder {
   private mediaRecorder!: MediaRecorder;
   private audioChunks: Blob[] = [];
   private stream!: MediaStream;
-  recordedAudioUrlContext = this.audioService.recordedAudio;
+  audioFileContext = this.audioService.audioFile;
   isRecording = false;
   isPaused = false;
 
@@ -30,7 +30,7 @@ export class AudioRecorder {
       );
       this.mediaRecorder.addEventListener('stop', () => {
         const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
-        this.recordedAudioUrlContext.next({
+        this.audioFileContext.next({
           objectUrl: URL.createObjectURL(audioBlob),
           fileName: this.audioService.generateAudioFilename(),
         });
@@ -64,7 +64,7 @@ export class AudioRecorder {
     const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
     const audioFile = new File(
       [audioBlob],
-      this.recordedAudioUrlContext.value.fileName,
+      this.audioFileContext.value.fileName,
       {
         type: 'audio/wav',
       }

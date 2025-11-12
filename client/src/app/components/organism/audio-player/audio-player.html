@@ -1,18 +1,28 @@
 <app-box>
   <div class="audio-display">
-    <input type="range" min="0" class="audio-slider" />
-    <div class="audio-display__info">
-      <p class="audio-display__info--audioname">2025-10-03.wav</p>
-      <p class="audio-display__info--time">
-        <span>{{ currentTime }}</span> /
-        <span>{{ totalDuration }}</span>
-      </p>
-    </div>
     <audio
       class="audio-display__player"
       #audioElement
-      [src]="recordedAudioUrlContext.value"
+      [src]="audioFileContext.value.objectUrl"
+      (timeupdate)="updateSlider($event)"
       preload="auto"></audio>
+    <input
+      type="range"
+      min="0"
+      [max]="audioElement.duration"
+      step="0.1"
+      [(ngModel)]="currentSecond"
+      (change)="onSliderChange($event)"
+      class="audio-slider" />
+    <div class="audio-display__info">
+      <p class="audio-display__info--audioname">
+        {{ audioFileContext.value.fileName }}
+      </p>
+      <p class="audio-display__info--time">
+        <span>{{ currentSecond | formatSecond }}</span> /
+        <span>{{ audioDuration() | formatSecond }}</span>
+      </p>
+    </div>
 
     <div class="audio-display__controls">
       <app-icon-button

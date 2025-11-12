@@ -8,6 +8,7 @@
       "@components/*": ["./app/components/*"],
       "@utils/*": ["./app/utils/*"],
       "@services/*": ["./app/services/*"],
+      "@pipes/*": ["./app/pipes/*"],
       "@environments/*": ["./environments/*"]
     },
     "strict": true,

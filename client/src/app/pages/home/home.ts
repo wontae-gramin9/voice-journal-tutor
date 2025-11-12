@@ -26,5 +26,5 @@ import { AudioService } from '@services/audio.service';
 })
 export class Home {
   private audioService = inject(AudioService);
-  recordedAudioUrl = this.audioService.recordedAudio;
+  recordedAudioUrl = this.audioService.audioFile;
 }

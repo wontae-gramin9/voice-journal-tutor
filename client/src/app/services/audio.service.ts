@@ -3,16 +3,22 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment.development';
 import { BehaviorSubject } from 'rxjs';
 
+export interface AudioFile {
+  objectUrl: string;
+  fileName: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class AudioService {
   private audioApiUrl = environment.apiUrl + '/audio';
   private http = inject(HttpClient);
-  recordedAudio = new BehaviorSubject({
+  audioFile = new BehaviorSubject({
     objectUrl: '',
     fileName: '',
   });
+
   recognizedAudioText$ = new BehaviorSubject<string>('');
 
   generateAudioFilename() {
