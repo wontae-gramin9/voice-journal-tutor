@@ -2,8 +2,5 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.is-active {
-  background-color: var(--color-dark-pink);
+  cursor: pointer;
 }
