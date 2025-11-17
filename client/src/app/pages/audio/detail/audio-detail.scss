@@ -6,6 +6,12 @@
     display: flex;
     flex-direction: column;
     justify-content: start;
+
+    .audio-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
   }
 
   .recording-text {
