@@ -5,10 +5,11 @@ import { AudioPlayer } from '@components/organism/audio-player/audio-player';
 import { Textarea } from '@components/common/textarea/textarea';
 import { Sentiment } from '@components/organism/sentiment/sentiment';
 import { ActivatedRoute } from '@angular/router';
+import { Backspace } from '@components/common/backspace/backspace';
 
 @Component({
   selector: 'app-audio-detail',
-  imports: [Card, Container, AudioPlayer, Textarea, Sentiment],
+  imports: [Card, Container, AudioPlayer, Textarea, Sentiment, Backspace],
   templateUrl: './audio-detail.html',
   styleUrl: './audio-detail.scss',
 })
