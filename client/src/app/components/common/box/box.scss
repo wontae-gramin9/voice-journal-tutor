@@ -1,8 +1,0 @@
-@use 'variables' as *;
-.app-box {
-  border-radius: $border-radius;
-  background-color: var(--color-dark-white);
-  border: 1px solid var(--color-light-gray);
-  box-shadow: var(--box-shadow-medium);
-  padding: 1rem;
-}
