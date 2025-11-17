@@ -10,6 +10,13 @@
 
   .journal-tutor {
     flex: 1;
+
+    &--header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
   }
 
   .sentiment-history {

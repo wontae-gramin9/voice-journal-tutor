@@ -1,12 +1,16 @@
 <section class="home-page">
   <app-card class="card journal-tutor">
     <app-container>
-      <h3>Record Voice Journal</h3>
+      <div class="journal-tutor--header">
+        <h3>Record Voice Journal</h3>
+        <app-icon-button
+          (click)="navigateToNewRecording()"
+          iconName="mic"></app-icon-button>
+      </div>
       @for (audioId of audioIDs; track audioId) {
-        <app-audio-recording 
+        <app-audio-recording
           [audioId]="audioId"
-          (onClick)="navigateToRecording($event)"
-        />
+          (onClick)="navigateToRecording($event)" />
       }
     </app-container>
   </app-card>

@@ -1,24 +1,14 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { Card } from '@components/common/card/card';
 import { Container } from '@components/common/container/container';
-import { AudioPlayer } from '@components/organism/audio-player/audio-player';
 import { Textarea } from '@components/common/textarea/textarea';
 import { Sentiment } from '@components/organism/sentiment/sentiment';
-import { ActivatedRoute } from '@angular/router';
+import { AudioRecorder } from '@components/organism/audio-recorder/audio-recorder';
 
 @Component({
   selector: 'app-audio',
-  imports: [Card, Container, AudioPlayer, Textarea, Sentiment],
+  imports: [Card, Container, Textarea, Sentiment, AudioRecorder],
   templateUrl: './audio.html',
   styleUrl: './audio.scss',
 })
-export class Audio {
-  private activatedRoute = inject(ActivatedRoute);
-  recordingId = signal('');
-
-  constructor() {
-    this.activatedRoute.params.subscribe(params => {
-      this.recordingId.set(params['recordingId']);
-    });
-  }
-}
+export class Audio {}

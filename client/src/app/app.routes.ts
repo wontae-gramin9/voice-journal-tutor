@@ -13,7 +13,11 @@ export const routes: Routes = [
   {
     path: 'audio/:audioId',
     loadComponent: () =>
-      import('./pages/audio/audio').then(m => m.Audio),
+      import('./pages/audio/detail/audio-detail').then(m => m.AudioDetail),
+  },
+  {
+    path: 'audio',
+    loadComponent: () => import('./pages/audio/audio').then(m => m.Audio),
   },
   {
     path: 'login',

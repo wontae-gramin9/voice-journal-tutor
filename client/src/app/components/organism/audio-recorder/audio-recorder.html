@@ -17,6 +17,13 @@
       <app-icon-button
         (click)="startRecording()"
         iconName="mic"></app-icon-button>
+
+      @if (isFinished) {
+        <app-icon-button
+          (click)="uploadRecording()"
+          iconName="upload"></app-icon-button>
+      }
     }
   </div>
+  <div class="audio-preview">{{ audioFileContext.value.fileName }}</div>
 </app-box>
