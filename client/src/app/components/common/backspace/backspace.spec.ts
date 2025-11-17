@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RecentRecording } from './recent-recording';
+import { Backspace } from './backspace';
 
-describe('RecentRecording', () => {
-  let component: RecentRecording;
-  let fixture: ComponentFixture<RecentRecording>;
+describe('Backspace', () => {
+  let component: Backspace;
+  let fixture: ComponentFixture<Backspace>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RecentRecording],
+      imports: [Backspace],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(RecentRecording);
+    fixture = TestBed.createComponent(Backspace);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

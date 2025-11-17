@@ -1,11 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
-import { IconButton } from '@components/common/icon-button/icon-button';
-import type { TypeSentiment } from 'types/sentiment.type';
+import { TypeSentiment } from 'app/types/sentiment';
+import { Icon } from '@components/common/icon/icon';
 
 @Component({
   selector: 'app-sentiment',
-  imports: [IconButton, TitleCasePipe],
+  imports: [TitleCasePipe, Icon],
   templateUrl: './sentiment.html',
   styleUrl: './sentiment.scss',
 })

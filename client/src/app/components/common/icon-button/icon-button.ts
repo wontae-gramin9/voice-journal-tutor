@@ -1,17 +1,24 @@
 import { Component, EventEmitter, input, Output } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
+import { Icon } from '../icon/icon';
 
 @Component({
   selector: 'app-icon-button',
-  imports: [MatIcon],
+  imports: [Icon],
   templateUrl: './icon-button.html',
   styleUrl: './icon-button.scss',
 })
 export class IconButton {
-  iconName = input<string>();
-  @Output() clicked = new EventEmitter<MouseEvent>();
+  iconName = input('');
+
+  outlined = input(true);
+  disabled = input(false);
+  @Output() clicked = new EventEmitter<void>();
 
   onClick(event: MouseEvent) {
-    this.clicked.emit(event);
+    if (this.disabled()) {
+      event.preventDefault();
+      return;
+    }
+    this.clicked.emit();
   }
 }

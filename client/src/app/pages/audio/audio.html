@@ -1,0 +1,25 @@
+<section class="recording-page">
+  <app-card class="card recording-text">
+    <app-container>
+      <div class="audio-header">
+        <h2>Record & Correct</h2>
+        <app-backspace />
+      </div>
+      <app-audio-recorder />
+    </app-container>
+    <app-container>
+      <h3>Transcribed Text</h3>
+      <app-textarea>The day was good</app-textarea>
+    </app-container>
+    <app-container>
+      <h3>Corrected Text</h3>
+      <app-textarea>The day was bad</app-textarea>
+    </app-container>
+  </app-card>
+  <app-card class="card sentiment-recording">
+    <app-container>
+      <h2>Sentiment</h2>
+      <app-sentiment></app-sentiment>
+    </app-container>
+  </app-card>
+</section>
