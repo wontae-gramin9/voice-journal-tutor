@@ -1,4 +1,4 @@
-.home-page {
+.recording-page {
   display: flex;
   gap: 1rem;
   height: 100%;
@@ -6,20 +6,19 @@
     display: flex;
     flex-direction: column;
     justify-content: start;
-  }
 
-  .journal-tutor {
-    flex: 1;
-
-    &--header {
+    .audio-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1rem;
     }
   }
 
-  .sentiment-history {
-    flex: 2;
+  .recording-text {
+    flex: 1;
+  }
+
+  .sentiment-recording {
+    flex: 1;
   }
 }

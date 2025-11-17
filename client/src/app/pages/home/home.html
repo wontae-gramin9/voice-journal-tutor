@@ -1,30 +1,17 @@
 <section class="home-page">
   <app-card class="card journal-tutor">
     <app-container>
-      <h3>Record Voice Journal</h3>
-      <app-recent-recording />
-      <app-recent-recording />
-      <app-recent-recording />
-      <app-recent-recording />
-    </app-container>
-  </app-card>
-  <app-card class="card record-correct">
-    <app-container>
-      <h2>Record & Correct</h2>
-      <app-audio-recorder />
-      <app-audio-player />
-    </app-container>
-    <app-container>
-      <h3>Transcribed Text</h3>
-      <app-textarea>The day was good</app-textarea>
-    </app-container>
-    <app-container>
-      <h3>Corrected Text</h3>
-      <app-textarea>The day was bad</app-textarea>
-    </app-container>
-    <app-container>
-      <h3>Sentiment</h3>
-      <app-sentiment></app-sentiment>
+      <div class="journal-tutor--header">
+        <h3>Record Voice Journal</h3>
+        <app-icon-button
+          (click)="navigateToNewRecording()"
+          iconName="mic"></app-icon-button>
+      </div>
+      @for (audioId of audioIDs; track audioId) {
+        <app-audio-recording
+          [audioId]="audioId"
+          (onClick)="navigateToRecording($event)" />
+      }
     </app-container>
   </app-card>
   <app-card class="card sentiment-history">

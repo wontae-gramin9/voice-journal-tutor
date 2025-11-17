@@ -1,6 +1,9 @@
-<mat-icon
-  class="app-icon"
-  fontSet="material-symbols-outlined"
+<button
+  class="app-icon-button"
+  matIconButton
+  type="button"
+  [class.outlined]="outlined()"
+  [disabled]="disabled()"
   (click)="onClick($event)">
-  {{ iconName() }}
-</mat-icon>
+  <app-icon [iconName]="iconName()"></app-icon>
+</button>
