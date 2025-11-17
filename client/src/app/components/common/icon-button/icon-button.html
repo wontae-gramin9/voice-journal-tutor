@@ -1,0 +1,9 @@
+<button
+  class="app-icon-button"
+  matIconButton
+  type="button"
+  [class.outlined]="outlined()"
+  [disabled]="disabled()"
+  (click)="onClick($event)">
+  <app-icon [iconName]="iconName()"></app-icon>
+</button>

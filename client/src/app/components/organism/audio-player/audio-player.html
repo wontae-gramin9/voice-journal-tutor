@@ -1,0 +1,60 @@
+<app-box>
+  <div class="audio-display">
+    <audio
+      class="audio-display__player"
+      #audioElement
+      [src]="audioFileContext.value.objectUrl"
+      (timeupdate)="updateSlider($event)"
+      preload="auto"></audio>
+    <input
+      type="range"
+      min="0"
+      [max]="audioElement.duration"
+      step="0.1"
+      [(ngModel)]="currentSecond"
+      (change)="onSliderChange($event)"
+      class="audio-slider" />
+    <div class="audio-display__info">
+      <p class="audio-display__info--audioname">
+        {{ audioFileContext.value.fileName }}
+      </p>
+      <p class="audio-display__info--time">
+        <span>{{ currentSecond | formatSecond }}</span> /
+        <span>{{ audioDuration() | formatSecond }}</span>
+      </p>
+    </div>
+
+    <div class="audio-display__controls">
+      <app-icon-button
+        (clicked)="jumpBackwardAudio()"
+        iconName="replay_5"></app-icon-button>
+      @if (isPlaying()) {
+        <app-icon-button
+          (clicked)="pauseAudio()"
+          iconName="pause_circle"></app-icon-button>
+      } @else {
+        <app-icon-button
+          (clicked)="playAudio()"
+          iconName="play_arrow"></app-icon-button>
+      }
+      <app-icon-button
+        (clicked)="jumpForwardAudio()"
+        iconName="forward_5"></app-icon-button>
+      <app-icon-button
+        (clicked)="downloadAudio()"
+        iconName="download"></app-icon-button>
+      <select
+        class="audio-display__controls--playback"
+        required
+        (change)="changePlaybackSpeed($event)">
+        @for (speed of playbackSpeeds; track speed) {
+          @if (speed === 1) {
+            <option selected [value]="speed">{{ speed }}x</option>
+          } @else {
+            <option [value]="speed">{{ speed }}x</option>
+          }
+        }
+      </select>
+    </div>
+  </div>
+</app-box>

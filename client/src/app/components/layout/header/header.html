@@ -1,0 +1,21 @@
+<section class="app-header">
+  <div class="app-header-content">
+    <div class="logo-section logo-section__home">
+      <app-icon-button
+        iconName="speech_to_text"
+        [outlined]="false"
+        (clicked)="navigateToHome()"></app-icon-button>
+      <h2>Voice Journal Tutor</h2>
+    </div>
+    <div div class="logo-section logo-section__settings">
+      <app-icon-button
+        iconName="logout"
+        [outlined]="false"
+        (clicked)="logout()"></app-icon-button>
+      <app-icon-button
+        iconName="settings"
+        [outlined]="false"
+        (clicked)="openSettings()"></app-icon-button>
+    </div>
+  </div>
+</section>

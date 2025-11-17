@@ -1,0 +1,76 @@
+.audio-display {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  &__info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &__controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    &--playback {
+      height: 31px;
+      font-family: lato;
+      border: 1px solid var(--color-dark-gray);
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}
+
+.audio-slider {
+  -webkit-appearance: none; /* WebKit/Blink 브라우저에서 기본 스타일 제거 */
+  appearance: none;
+  width: 100%; /* 슬라이더 너비 */
+  height: 6px; /* 트랙 높이 */
+  background: var(--color-light-gray); /* 트랙 배경색 */
+  border-radius: 3px;
+  cursor: pointer;
+  margin: 0;
+}
+
+/* 슬라이더 트랙 (진행 막대) */
+.audio-slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  background: var(--color-light-gray);
+  border-radius: 3px;
+}
+
+/* 슬라이더 인디케이터 (Thumb, 재생 표시자) */
+.audio-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -5px; /* 트랙 중앙에 위치하도록 조정 */
+  width: 16px;
+  height: 16px;
+  background: var(--color-red); /* 테마 색상으로 인디케이터 색상 지정 */
+  border-radius: 50%; /* 원형 모양 */
+  cursor: grab;
+  transition: background 0.2s;
+}
+
+/* 파이어폭스 스타일링 (FF에서도 일관성을 위해 추가) */
+.audio-slider::-moz-range-track {
+  background: var(--color-light-gray);
+  border-radius: 3px;
+  height: 6px;
+}
+.audio-slider::-moz-range-thumb {
+  background: var(--color-red);
+  border: none;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+}

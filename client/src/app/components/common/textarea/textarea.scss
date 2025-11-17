@@ -1,0 +1,6 @@
+@use 'variables' as *;
+.app-textarea {
+  border-radius: $border-radius;
+  border: 1px solid var(--color-light-gray);
+  padding: 0.5rem;
+}

@@ -1,0 +1,23 @@
+<section class="home-page">
+  <app-card class="card journal-tutor">
+    <app-container>
+      <div class="journal-tutor--header">
+        <h3>Record Voice Journal</h3>
+        <app-icon-button
+          (click)="navigateToNewRecording()"
+          iconName="mic"></app-icon-button>
+      </div>
+      @for (audioId of audioIDs; track audioId) {
+        <app-audio-recording
+          [audioId]="audioId"
+          (onClick)="navigateToRecording($event)" />
+      }
+    </app-container>
+  </app-card>
+  <app-card class="card sentiment-history">
+    <app-container>
+      <h2>Sentiment History</h2>
+      <app-sentiment-graph></app-sentiment-graph>
+    </app-container>
+  </app-card>
+</section>
