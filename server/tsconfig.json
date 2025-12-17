@@ -2,7 +2,8 @@
   "compilerOptions": {
     "baseUrl": "./src/",
     "paths": {
-      "@modules/*": ["./modules/*"]
+      "@modules/*": ["./modules/*"],
+      "@utils/*": ["./utils/*"]
     },
     "module": "nodenext",
     "moduleResolution": "nodenext",

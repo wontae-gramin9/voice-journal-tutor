@@ -46,6 +46,7 @@ export class AudioMetadata {
   name: string;
   mimeType: string;
   size: number; // in bytes
-  storagePath: string; // 저장소 내의 경로/키 (IAudioStorage.uploadAudio의 반환값)
+  filePath: string; // 저장소 내의 경로/키 (IAudioStorage.uploadAudio의 반환값)
+  extension: string;
   uploadedAt: Date;
 }

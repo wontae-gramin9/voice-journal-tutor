@@ -35,8 +35,7 @@ export class LocalFileStorageService implements IAudioStorage {
     return `/audio/play/${uuid}`;
   }
 
-  getAudioFileStream(uuid: string): NodeJS.ReadableStream {
-    const filePath = this.getLocalFilePath(uuid);
+  getAudioFileStream(filePath: string): NodeJS.ReadableStream {
     if (!fs.existsSync(filePath)) {
       throw new Error(`Audio file not found: ${filePath}`);
     }

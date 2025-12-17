@@ -9,6 +9,7 @@ import {
   Res,
   UploadedFile,
   UseInterceptors,
+  Logger,
 } from '@nestjs/common';
 import type { Response } from 'express';
 import { AudioService } from './audio.service';
@@ -41,7 +42,7 @@ export class AudioController {
   streamAudio(@Param('uuid') uuid: string, @Res() res: Response) {
     try {
       const { metadata } = this.audioService.getAudioInfo(uuid);
-      const stream = this.audioService.getAudioFileStream(uuid);
+      const stream = this.audioService.getAudioFileStream(metadata.filePath);
 
       // 헤더 설정
       res.setHeader('Content-Type', metadata.mimeType);
