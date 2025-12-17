@@ -1,0 +1,10 @@
+[
+  {
+    "uuid": "test_id_123",
+    "name": "New Recodingtest",
+    "mimeType": "audio/mpeg",
+    "size": 198326,
+    "storagePath": "C:\\Users\\Wontae\\Dev\\voice-journal-tutor\\server\\uploads\\audio\\test_id_123.audio",
+    "uploadedAt": "2025-12-17T13:04:04.381Z"
+  }
+]
