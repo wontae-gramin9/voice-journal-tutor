@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
-import { AudioMetadata, IAudioMetadataStore } from '@audio/interfaces/audio-storage.interface';
+import { AudioMetadata, IAudioMetadataStore } from '@modules/audio/interfaces/audio-storage.interface';
 
 @Injectable()
 export class LocalJsonMetadataStoreService implements IAudioMetadataStore {

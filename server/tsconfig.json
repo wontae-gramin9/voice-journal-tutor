@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./src/",
     "paths": {
-      "@audio/*": ["./audio/*"]
+      "@modules/*": ["./modules/*"]
     },
     "module": "nodenext",
     "moduleResolution": "nodenext",
