@@ -10,7 +10,7 @@
       @for (audioId of audioIDs; track audioId) {
         <app-audio-recording
           [audioId]="audioId"
-          (onClick)="navigateToRecording($event)" />
+          (clicked)="navigateToRecording($event)" />
       }
     </app-container>
   </app-card>
