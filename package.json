@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/wontae-gramin9/voice-journal-tutor#readme",
   "devDependencies": {
+    "@types/multer": "^2.0.0",
     "eslint-plugin-unused-imports": "^4.2.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.4"
