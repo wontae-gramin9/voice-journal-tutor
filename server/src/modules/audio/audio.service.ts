@@ -66,6 +66,6 @@ export class AudioService {
    * 새로운 오디오 목록을 조회합니다.
    */
   getNewRecordings(after: string): AudioMetadata[] {
-    return this.metadataStore.getNewRecordings(after);
+    return this.metadataStore.getRecordings(after);
   }
 }

@@ -38,7 +38,7 @@ export interface IAudioMetadataStore {
    * 현재 json 파일에서 동기적으로 메타데이터를 조회
    * @param after 기준날짜 (ISO 문자열)
    */
-  getNewRecordings(after: string): AudioMetadata[];
+  getRecordings(after: string): AudioMetadata[];
 }
 
 export class AudioMetadata {

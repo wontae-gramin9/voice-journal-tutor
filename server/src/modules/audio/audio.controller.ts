@@ -56,9 +56,9 @@ export class AudioController {
     }
   }
 
-  // GET /audio/new/list?after=ISO_DATE
-  @Get('new/list')
-  getNewRecordings(@Query('after') after: string): AudioMetadata[] {
+  // GET /audio/list?after=ISO_DATE
+  @Get('list')
+  getRecordings(@Query('after') after: string): AudioMetadata[] {
     if (!after) {
       const defaultDateOneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
       return this.audioService.getNewRecordings(defaultDateOneDayAgo);
