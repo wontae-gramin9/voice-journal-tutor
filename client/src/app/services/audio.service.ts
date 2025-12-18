@@ -32,4 +32,11 @@ export class AudioService {
       formData
     );
   }
+
+  // DELETE /audio/list?after=IS0_DATE
+  getRecordingMetadataList(after: string) {
+    return this.http.get<AudioMetadata[]>(`${this.audioApiUrl}/list`, {
+      params: { after },
+    });
+  }
 }
