@@ -21,6 +21,16 @@ import { AudioMetadata } from './interfaces/audio-storage.interface';
 export class AudioController {
   constructor(private readonly audioService: AudioService) {}
 
+  // GET /audio/list?after=ISO_DATE
+  @Get('list')
+  getRecordings(@Query('after') after: string): AudioMetadata[] {
+    if (!after) {
+      const defaultDateOneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      return this.audioService.getNewRecordings(defaultDateOneDayAgo);
+    }
+    return this.audioService.getNewRecordings(after);
+  }
+
   @Get(':uuid')
   getAudioInfo(@Param('uuid') uuid: string) {
     return this.audioService.getAudioInfo(uuid);
@@ -53,15 +63,5 @@ export class AudioController {
         message: `Error: ${error}`,
       });
     }
-  }
-
-  // GET /audio/list?after=ISO_DATE
-  @Get('list')
-  getRecordings(@Query('after') after: string): AudioMetadata[] {
-    if (!after) {
-      const defaultDateOneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-      return this.audioService.getNewRecordings(defaultDateOneDayAgo);
-    }
-    return this.audioService.getNewRecordings(after);
   }
 }
