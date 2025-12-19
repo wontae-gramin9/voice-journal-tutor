@@ -1,4 +1,4 @@
-import { Injectable, Inject, BadRequestException, NotFoundException } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import type { IAudioStorage, IAudioMetadataStore, AudioMetadata } from './interfaces/audio-storage.interface';
 import { AUDIO_STORAGE_SERVICE, AUDIO_METADATA_STORE } from './audio.constants';
 import { getExtensionFromMime } from '@utils/audio.util';

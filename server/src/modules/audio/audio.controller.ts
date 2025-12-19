@@ -9,7 +9,6 @@ import {
   Res,
   UploadedFile,
   UseInterceptors,
-  Logger,
 } from '@nestjs/common';
 import type { Response } from 'express';
 import { AudioService } from './audio.service';
@@ -51,7 +50,7 @@ export class AudioController {
     } catch (error) {
       res.status(HttpStatus.NOT_FOUND).send({
         statusCode: HttpStatus.NOT_FOUND,
-        message: 'Audio file not found or streaming not supported',
+        message: `Error: ${error}`,
       });
     }
   }

@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
-import { IAudioMetadataStore, IAudioStorage } from '@modules/audio/interfaces/audio-storage.interface';
+import { IAudioStorage } from '@modules/audio/interfaces/audio-storage.interface';
 
 @Injectable()
 export class LocalFileStorageService implements IAudioStorage {
@@ -23,7 +23,7 @@ export class LocalFileStorageService implements IAudioStorage {
     return path.join(this.UPLOAD_DIR, `${uuid}.audio`);
   }
 
-  async uploadAudio(uuid: string, fileData: Buffer, mimeType: string): Promise<string> {
+  async uploadAudio(uuid: string, fileData: Buffer): Promise<string> {
     const filePath = this.getLocalFilePath(uuid);
     await fs.promises.writeFile(filePath, fileData);
     this.logger.log(`Uploaded audio file: ${filePath}`);
