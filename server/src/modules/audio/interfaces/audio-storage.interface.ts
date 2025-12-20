@@ -43,10 +43,10 @@ export interface IAudioMetadataStore {
 
 export class AudioMetadata {
   uuid: string;
-  name: string;
+  title: string;
   mimeType: string;
   size: number; // in bytes
-  filePath: string; // 저장소 내의 경로/키 (IAudioStorage.uploadAudio의 반환값)
+  fileName: string; // 상대경로로 변환한 이후에는 fileName만 필요
   extension: string;
   uploadedAt: Date;
 }

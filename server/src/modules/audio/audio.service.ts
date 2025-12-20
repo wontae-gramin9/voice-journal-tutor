@@ -21,15 +21,15 @@ export class AudioService {
    * @param file 클라이언트로부터 받은 Audio 파일
    */
   async uploadAudio(uuid: string, file: Express.Multer.File): Promise<AudioMetadata> {
-    const filePath = await this.audioStorage.uploadAudio(uuid, file.buffer, file.mimetype);
+    const fileName = await this.audioStorage.uploadAudio(uuid, file.buffer, file.mimetype);
     const extension = getExtensionFromMime(file.mimetype);
 
     const metadata: AudioMetadata = {
       uuid,
-      name: 'New Recoding' + uuid.substring(0, 4), // 임시 이름, 실제로는 클라이언트에서 받아야 함
+      title: 'New Recoding' + uuid.substring(0, 4), // 임시 이름, 실제로는 클라이언트에서 받아야 함
       mimeType: file.mimetype,
       size: file.size,
-      filePath,
+      fileName,
       extension,
       uploadedAt: new Date(),
     };

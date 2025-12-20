@@ -46,12 +46,11 @@ export class AudioController {
   }
 
   // 추가 엔드포인트: 로컬 환경에서 재생 URL이 API 경로인 경우
-
-  @Get('play/:uuid/')
+  @Get('play/:uuid')
   streamAudio(@Param('uuid') uuid: string, @Res() res: Response) {
     try {
       const { metadata } = this.audioService.getAudioInfo(uuid);
-      const stream = this.audioService.getAudioFileStream(metadata.filePath);
+      const stream = this.audioService.getAudioFileStream(metadata.fileName);
 
       // 헤더 설정
       res.setHeader('Content-Type', metadata.mimeType);
