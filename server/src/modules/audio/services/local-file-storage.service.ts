@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { IAudioStorage } from '@modules/audio/interfaces/audio-storage.interface';
 import { getSafeIsoTimestamp } from '@utils/time.util';
+import { getExtensionFromMime } from '@utils/audio.util';
 
 @Injectable()
 export class LocalFileStorageService implements IAudioStorage {
@@ -20,16 +21,18 @@ export class LocalFileStorageService implements IAudioStorage {
     }
   }
 
-  private generateFileName(uuid: string): string {
-    return `${uuid}_${getSafeIsoTimestamp(new Date())}`;
+  private generateFileName(uuid: string, extension: string): string {
+    return `${uuid}_${getSafeIsoTimestamp(new Date())}${extension}`;
   }
 
   private getAbsoluteFilePath(fileName: string): string {
     return path.join(this.uploadDir, fileName);
   }
 
-  async uploadAudio(uuid: string, fileData: Buffer): Promise<string> {
-    const fileName = this.generateFileName(uuid);
+  async uploadAudio(uuid: string, fileData: Buffer, mimeType: string): Promise<string> {
+    const extension = getExtensionFromMime(mimeType);
+    const fileName = this.generateFileName(uuid, extension);
+
     const filePath = this.getAbsoluteFilePath(fileName);
     await fs.promises.writeFile(filePath, fileData);
     this.logger.log(`Uploaded audio file: ${filePath}`);
