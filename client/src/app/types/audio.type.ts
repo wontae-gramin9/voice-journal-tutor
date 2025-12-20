@@ -7,3 +7,8 @@ export interface AudioMetadata {
   extension: string;
   uploadedAt: Date;
 }
+
+export interface AudioInfo {
+  metadata: AudioMetadata;
+  playbackUrl: string;
+}
