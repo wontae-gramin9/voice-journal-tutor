@@ -1,4 +1,5 @@
 export interface IAudioStorage {
+  getAbsoluteFilePath(fileName: string): string;
   /**
    * @param uuid 고유 ID (파일 이름으로도 사용)
    * @param fileData 파일 버퍼 혹은 스트림

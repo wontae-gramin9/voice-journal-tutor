@@ -15,6 +15,10 @@ export class AudioService {
     private readonly metadataStore: IAudioMetadataStore, // 현재 LocalJsonMetadataStoreService
   ) {}
 
+  getAbsoluteFilePath(fileName: string): string {
+    return this.audioStorage.getAbsoluteFilePath(fileName);
+  }
+
   /**
    * 오디오 파일을 저장하고 메타데이터를 생성합니다.
    * @param uuid

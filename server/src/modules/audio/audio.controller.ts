@@ -2,7 +2,6 @@ import {
   BadRequestException,
   Controller,
   Get,
-  HttpStatus,
   Param,
   Post,
   Query,
@@ -48,19 +47,8 @@ export class AudioController {
   // 추가 엔드포인트: 로컬 환경에서 재생 URL이 API 경로인 경우
   @Get('play/:uuid')
   streamAudio(@Param('uuid') uuid: string, @Res() res: Response) {
-    try {
-      const { metadata } = this.audioService.getAudioInfo(uuid);
-      const stream = this.audioService.getAudioFileStream(metadata.fileName);
-
-      // 헤더 설정
-      res.setHeader('Content-Type', metadata.mimeType);
-      stream.pipe(res);
-      return stream;
-    } catch (error) {
-      res.status(HttpStatus.NOT_FOUND).send({
-        statusCode: HttpStatus.NOT_FOUND,
-        message: `Error: ${error}`,
-      });
-    }
+    const { metadata } = this.audioService.getAudioInfo(uuid);
+    const filePath = this.audioService.getAbsoluteFilePath(metadata.fileName);
+    return res.sendFile(filePath, { headers: { 'Content-Type': metadata.mimeType } });
   }
 }

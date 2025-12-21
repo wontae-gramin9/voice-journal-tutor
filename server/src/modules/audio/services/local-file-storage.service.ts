@@ -25,7 +25,7 @@ export class LocalFileStorageService implements IAudioStorage {
     return `${uuid}_${getSafeIsoTimestamp(new Date())}${extension}`;
   }
 
-  private getAbsoluteFilePath(fileName: string): string {
+  getAbsoluteFilePath(fileName: string): string {
     return path.join(this.uploadDir, fileName);
   }
 
