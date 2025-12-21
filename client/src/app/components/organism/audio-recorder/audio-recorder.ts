@@ -35,7 +35,11 @@ export class AudioRecorder implements OnDestroy {
         this.audioChunks.push(e.data)
       );
       this.mediaRecorder.addEventListener('stop', () => {
-        const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+        const audioBlob = new Blob(this.audioChunks, {
+          type: this.mediaRecorder.mimeType, // 타입을 꼭 맞춰줘야 함
+        });
+        console.log(this.mediaRecorder.mimeType);
+
         const uuid = uuidv4();
         this.audioFileContext.next({
           objectUrl: URL.createObjectURL(audioBlob),
@@ -76,7 +80,7 @@ export class AudioRecorder implements OnDestroy {
       [audioBlob],
       this.audioFileContext.value.fileName,
       {
-        type: 'audio/wav',
+        type: this.mediaRecorder.mimeType,
       }
     );
     const result = this.audioService
