@@ -3,7 +3,7 @@ import { IconButton } from '@components/common/icon-button/icon-button';
 import { Box } from '@components/common/box/box';
 import { AudioService } from '@services/audio.service';
 import { CommonModule } from '@angular/common';
-
+import { v4 as uuidv4 } from 'uuid';
 @Component({
   selector: 'app-audio-recorder',
   imports: [IconButton, Box, CommonModule],
@@ -35,10 +35,15 @@ export class AudioRecorder implements OnDestroy {
         this.audioChunks.push(e.data)
       );
       this.mediaRecorder.addEventListener('stop', () => {
-        const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+        const audioBlob = new Blob(this.audioChunks, {
+          type: this.mediaRecorder.mimeType, // 타입을 꼭 맞춰줘야 함
+        });
+        console.log(this.mediaRecorder.mimeType);
+
+        const uuid = uuidv4();
         this.audioFileContext.next({
           objectUrl: URL.createObjectURL(audioBlob),
-          fileName: this.audioService.generateAudioFilename(),
+          fileName: uuid,
         });
       });
 
@@ -75,10 +80,22 @@ export class AudioRecorder implements OnDestroy {
       [audioBlob],
       this.audioFileContext.value.fileName,
       {
-        type: 'audio/wav',
+        type: this.mediaRecorder.mimeType,
       }
     );
-    const result = this.audioService.uploadAudio(audioFile);
+    const result = this.audioService
+      .uploadAudio(this.audioFileContext.value.fileName, audioFile)
+      .subscribe({
+        next: res => {
+          console.log('Audio uploaded successfully:', res);
+        },
+        error: err => {
+          console.error('Error uploading audio:', err);
+        },
+      });
+    this.audioFileContext.next({ objectUrl: '', fileName: '' });
+    this.isFinished = false;
+    this.isRecording = false;
     return result;
   }
 }
