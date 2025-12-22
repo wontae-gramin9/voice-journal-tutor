@@ -13,7 +13,6 @@ import { FormsModule } from '@angular/forms';
 import { AudioService } from '@services/audio.service';
 import { IconButton } from '@components/common/icon-button/icon-button';
 import { FormatSecondPipe } from '@pipes/format.second';
-import { take } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '@environments/environment.development';
 import { AudioMetadata } from 'app/types/audio.type';
@@ -34,18 +33,15 @@ export class AudioPlayer implements OnInit, AfterViewInit, OnDestroy {
   private audioMetadataHandler!: () => void;
   isPlaying = signal(false);
   playbackSpeeds = [0.5, 1, 1.5, 2];
-  currentSecond = signal(0);
+  currentPlaybackTime = signal(0);
   audioDuration = signal(0);
 
   ngOnInit() {
     this.audioId = this.route.snapshot.paramMap.get('audioId') || '';
-    this.audioService
-      .getAudioInfo(this.audioId)
-      .pipe(take(1))
-      .subscribe(audioInfo => {
-        this.metadata = audioInfo.metadata;
-        this.playbackUrl = `${environment.apiUrl}${audioInfo.playbackUrl}`;
-      });
+    this.audioService.getAudioInfo(this.audioId).subscribe(audioInfo => {
+      this.metadata = audioInfo.metadata;
+      this.playbackUrl = `${environment.apiUrl}${audioInfo.playbackUrl}`;
+    });
   }
 
   ngAfterViewInit() {
@@ -106,10 +102,13 @@ export class AudioPlayer implements OnInit, AfterViewInit, OnDestroy {
     a.click();
   }
 
-  updateSlider(event: Event) {
-    this.audioElement.currentTime = (
-      event?.target as HTMLAudioElement
-    ).currentTime;
+  updateCurrentPlaybackTime(event: Event) {
+    const player = event?.target as HTMLAudioElement;
+    // 오디오가 0.00001초라도 재생되면 timeupdate 이벤트가 발생함
+    // this.audioElement.currentTime을 직접 대입하면, 외부에서 대입하는걸로 알고
+    // 재생 위치가 바뀐걸로 알아서 스트림을 다시 요청하고, 이게 0.00001초에서 계속 발생해서
+    // 무한루프에 빠지는 문제가 있어 signal로 관리
+    this.currentPlaybackTime.set(player.currentTime);
   }
 
   onSliderChange(event: Event) {
