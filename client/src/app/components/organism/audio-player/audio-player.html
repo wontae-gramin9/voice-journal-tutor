@@ -4,14 +4,14 @@
       class="audio-display__player"
       #audioElement
       [src]="playbackUrl"
-      (timeupdate)="updateSlider($event)"
+      (timeupdate)="updateCurrentPlaybackTime($event)"
       preload="auto"></audio>
     <input
       type="range"
       min="0"
       [max]="audioElement.duration"
       step="0.1"
-      [(ngModel)]="currentSecond"
+      [(ngModel)]="currentPlaybackTime"
       (change)="onSliderChange($event)"
       class="audio-slider" />
     @if (metadata) {
@@ -20,7 +20,7 @@
           {{ metadata.fileName }}
         </p>
         <p class="audio-display__info--time">
-          <span>{{ currentSecond() | formatSecond }}</span> /
+          <span>{{ currentPlaybackTime() | formatSecond }}</span> /
           <span>{{ audioDuration() | formatSecond }}</span>
         </p>
       </div>
