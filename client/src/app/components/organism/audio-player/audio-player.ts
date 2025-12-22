@@ -32,6 +32,7 @@ export class AudioPlayer implements OnInit, AfterViewInit, OnDestroy {
   metadata!: AudioMetadata;
   private audioMetadataHandler!: () => void;
   isPlaying = signal(false);
+  isSliderDragging = false;
   playbackSpeeds = [0.5, 1, 1.5, 2];
   currentPlaybackTime = signal(0);
   audioDuration = signal(0);
@@ -107,14 +108,27 @@ export class AudioPlayer implements OnInit, AfterViewInit, OnDestroy {
     // 오디오가 0.00001초라도 재생되면 timeupdate 이벤트가 발생함
     // this.audioElement.currentTime을 직접 대입하면, 외부에서 대입하는걸로 알고
     // 재생 위치가 바뀐걸로 알아서 스트림을 다시 요청하고, 이게 0.00001초에서 계속 발생해서
-    // 무한루프에 빠지는 문제가 있어 signal로 관리
+    // 무한루프에 빠지는 문제가 있어, 절대 audioElement의 prop을 직접 참조하지말고
+    // 변수만 바꿔주기
+    if (this.isSliderDragging) return;
     this.currentPlaybackTime.set(player.currentTime);
   }
 
+  onSliderStart() {
+    this.isSliderDragging = true;
+  }
+
   onSliderChange(event: Event) {
-    this.audioElement.currentTime = (
-      event?.target as HTMLInputElement
-    ).valueAsNumber;
+    // 그러나 여기도, 아무런 장치가 없으면 동시에 updateCurrentPlaybackTime이 불리는
+    // Race condition이 발생한다
+    // onSliderChange중에는 조작을 멈춰줘야 한다.
+    const slider = event?.target as HTMLInputElement;
+    const newTime = slider.valueAsNumber;
+
+    if (this.audioElement) {
+      this.audioElement.currentTime = newTime; // 새로운 값을 넣어서 새 스트림 받기
+    }
+    this.isSliderDragging = false; // 다시 updateCurrentPlaybackTime 허용
   }
 
   changePlaybackSpeed(event: Event) {

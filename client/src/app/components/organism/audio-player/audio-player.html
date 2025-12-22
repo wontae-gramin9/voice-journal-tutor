@@ -11,7 +11,9 @@
       min="0"
       [max]="audioElement.duration"
       step="0.1"
-      [(ngModel)]="currentPlaybackTime"
+      [value]="currentPlaybackTime()"
+      (touchStart)="onSliderStart()"
+      (mousedown)="onSliderStart()"
       (change)="onSliderChange($event)"
       class="audio-slider" />
     @if (metadata) {
