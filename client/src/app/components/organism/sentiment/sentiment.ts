@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
-import { TypeSentiment } from 'app/types/sentiment';
+import { TypeSentiment } from 'app/types/sentiment.type';
 import { Icon } from '@components/common/icon/icon';
 
 @Component({

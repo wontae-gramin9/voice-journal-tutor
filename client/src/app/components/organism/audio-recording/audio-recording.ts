@@ -1,4 +1,4 @@
-import { Component, EventEmitter, input, Output, output } from '@angular/core';
+import { Component, EventEmitter, input, Output } from '@angular/core';
 import { Box } from '@components/common/box/box';
 
 @Component({
@@ -10,9 +10,9 @@ import { Box } from '@components/common/box/box';
 export class AudioRecording {
   audioId = input('');
 
-  @Output() onClick = new EventEmitter<string>();
+  @Output() clicked = new EventEmitter<string>();
 
   handleClick() {
-    this.onClick.emit(this.audioId());
+    this.clicked.emit(this.audioId());
   }
 }
