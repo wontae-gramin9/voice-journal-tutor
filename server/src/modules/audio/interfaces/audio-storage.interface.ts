@@ -1,4 +1,5 @@
 export interface IAudioStorage {
+  getAbsoluteFilePath(fileName: string): string;
   /**
    * @param uuid 고유 ID (파일 이름으로도 사용)
    * @param fileData 파일 버퍼 혹은 스트림
@@ -38,15 +39,15 @@ export interface IAudioMetadataStore {
    * 현재 json 파일에서 동기적으로 메타데이터를 조회
    * @param after 기준날짜 (ISO 문자열)
    */
-  getNewRecordings(after: string): AudioMetadata[];
+  getRecordings(after: string): AudioMetadata[];
 }
 
 export class AudioMetadata {
   uuid: string;
-  name: string;
+  title: string;
   mimeType: string;
   size: number; // in bytes
-  filePath: string; // 저장소 내의 경로/키 (IAudioStorage.uploadAudio의 반환값)
+  fileName: string; // 상대경로로 변환한 이후에는 fileName만 필요
   extension: string;
   uploadedAt: Date;
 }

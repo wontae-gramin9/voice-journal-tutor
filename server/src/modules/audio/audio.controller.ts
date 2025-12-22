@@ -2,14 +2,12 @@ import {
   BadRequestException,
   Controller,
   Get,
-  HttpStatus,
   Param,
   Post,
   Query,
   Res,
   UploadedFile,
   UseInterceptors,
-  Logger,
 } from '@nestjs/common';
 import type { Response } from 'express';
 import { AudioService } from './audio.service';
@@ -21,6 +19,16 @@ import { AudioMetadata } from './interfaces/audio-storage.interface';
 @Controller('audio')
 export class AudioController {
   constructor(private readonly audioService: AudioService) {}
+
+  // GET /audio/list?after=ISO_DATE
+  @Get('list')
+  getRecordings(@Query('after') after: string): AudioMetadata[] {
+    if (!after) {
+      const defaultDateOneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      return this.audioService.getNewRecordings(defaultDateOneDayAgo);
+    }
+    return this.audioService.getNewRecordings(after);
+  }
 
   @Get(':uuid')
   getAudioInfo(@Param('uuid') uuid: string) {
@@ -37,32 +45,10 @@ export class AudioController {
   }
 
   // 추가 엔드포인트: 로컬 환경에서 재생 URL이 API 경로인 경우
-
-  @Get('play/:uuid/')
+  @Get('play/:uuid')
   streamAudio(@Param('uuid') uuid: string, @Res() res: Response) {
-    try {
-      const { metadata } = this.audioService.getAudioInfo(uuid);
-      const stream = this.audioService.getAudioFileStream(metadata.filePath);
-
-      // 헤더 설정
-      res.setHeader('Content-Type', metadata.mimeType);
-      stream.pipe(res);
-      return stream;
-    } catch (error) {
-      res.status(HttpStatus.NOT_FOUND).send({
-        statusCode: HttpStatus.NOT_FOUND,
-        message: 'Audio file not found or streaming not supported',
-      });
-    }
-  }
-
-  // GET /audio/new/list?after=ISO_DATE
-  @Get('new/list')
-  getNewRecordings(@Query('after') after: string): AudioMetadata[] {
-    if (!after) {
-      const defaultDateOneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-      return this.audioService.getNewRecordings(defaultDateOneDayAgo);
-    }
-    return this.audioService.getNewRecordings(after);
+    const { metadata } = this.audioService.getAudioInfo(uuid);
+    const filePath = this.audioService.getAbsoluteFilePath(metadata.fileName);
+    return res.sendFile(filePath, { headers: { 'Content-Type': metadata.mimeType } });
   }
 }

@@ -47,7 +47,7 @@ export class LocalJsonMetadataStoreService implements IAudioMetadataStore {
     return this.metadata.find((m) => m.uuid === uuid) || null;
   }
 
-  getNewRecordings(after: string): AudioMetadata[] {
+  getRecordings(after: string): AudioMetadata[] {
     const afterDate = new Date(after);
     if (isNaN(afterDate.getTime())) {
       throw new Error('Invalid ISO date format for "after" parameter.');
