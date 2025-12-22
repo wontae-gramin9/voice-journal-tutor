@@ -4,6 +4,7 @@ export const MIME_TO_EXTENSION = {
   'audio/mpeg': '.mp3',
   'audio/wav': '.wav',
   'audio/webm': '.webm',
+  'audio/webm;codecs=opus': '.webm', // 브라우저 MediaRecorder가 사용하는 형식
   'audio/ogg': '.ogg',
   'audio/acc': '.acc',
 };

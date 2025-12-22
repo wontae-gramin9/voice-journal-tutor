@@ -1,33 +1,42 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
-import { IAudioMetadataStore, IAudioStorage } from '@modules/audio/interfaces/audio-storage.interface';
+import { IAudioStorage } from '@modules/audio/interfaces/audio-storage.interface';
+import { getSafeIsoTimestamp } from '@utils/time.util';
+import { getExtensionFromMime } from '@utils/audio.util';
 
 @Injectable()
 export class LocalFileStorageService implements IAudioStorage {
   private readonly logger = new Logger(LocalFileStorageService.name);
-  private readonly UPLOAD_DIR = path.join(process.cwd(), 'uploads', 'audio');
+  private readonly uploadDir = path.join(process.cwd(), 'uploads', 'audio');
 
   constructor() {
     this.ensureUploadDirectoryExists();
   }
 
   private ensureUploadDirectoryExists() {
-    if (!fs.existsSync(this.UPLOAD_DIR)) {
-      fs.mkdirSync(this.UPLOAD_DIR, { recursive: true }); // 부모 디렉토리가 없으면 에러 대신 생성
-      this.logger.log(`Created upload directory at ${this.UPLOAD_DIR}`);
+    if (!fs.existsSync(this.uploadDir)) {
+      fs.mkdirSync(this.uploadDir, { recursive: true }); // 부모 디렉토리가 없으면 에러 대신 생성
+      this.logger.log(`Created upload directory at ${this.uploadDir}`);
     }
   }
 
-  private getLocalFilePath(uuid: string): string {
-    return path.join(this.UPLOAD_DIR, `${uuid}.audio`);
+  private generateFileName(uuid: string, extension: string): string {
+    return `${uuid}_${getSafeIsoTimestamp(new Date())}${extension}`;
+  }
+
+  getAbsoluteFilePath(fileName: string): string {
+    return path.join(this.uploadDir, fileName);
   }
 
   async uploadAudio(uuid: string, fileData: Buffer, mimeType: string): Promise<string> {
-    const filePath = this.getLocalFilePath(uuid);
+    const extension = getExtensionFromMime(mimeType);
+    const fileName = this.generateFileName(uuid, extension);
+
+    const filePath = this.getAbsoluteFilePath(fileName);
     await fs.promises.writeFile(filePath, fileData);
     this.logger.log(`Uploaded audio file: ${filePath}`);
-    return filePath; // 로컬 경로는 이후 Azure key/URL로 대체
+    return fileName; // 로컬 경로는 이후 Azure key/URL로 대체
   }
 
   getPlaybackUrl(uuid: string): string {
@@ -35,10 +44,11 @@ export class LocalFileStorageService implements IAudioStorage {
     return `/audio/play/${uuid}`;
   }
 
-  getAudioFileStream(filePath: string): NodeJS.ReadableStream {
-    if (!fs.existsSync(filePath)) {
-      throw new Error(`Audio file not found: ${filePath}`);
+  getAudioFileStream(fileName: string): NodeJS.ReadableStream {
+    const absoluteFilePath = this.getAbsoluteFilePath(fileName);
+    if (!fs.existsSync(absoluteFilePath)) {
+      throw new Error(`Audio file not found: ${absoluteFilePath}`);
     }
-    return fs.createReadStream(filePath);
+    return fs.createReadStream(absoluteFilePath);
   }
 }

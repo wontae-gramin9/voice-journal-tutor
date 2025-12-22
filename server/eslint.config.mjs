@@ -46,14 +46,6 @@ export default tseslint.config(
     },
   },
   {
-    // Disable "unused-imports" on Nest DI class
-    files: ['**/*.service.ts', '**/*.controller.ts', '**/*.module.ts', '**/*.resolver.ts'],
-    rules: {
-      'unused-imports/no-unused-vars': 'off',
-      'unused-imports/no-unused-imports': 'off',
-    },
-  },
-  {
     // Disable Promise rule on main.ts
     files: ['**/main.ts'],
     rules: {

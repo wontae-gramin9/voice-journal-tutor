@@ -1,4 +1,4 @@
-import { Injectable, Inject, BadRequestException, NotFoundException } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import type { IAudioStorage, IAudioMetadataStore, AudioMetadata } from './interfaces/audio-storage.interface';
 import { AUDIO_STORAGE_SERVICE, AUDIO_METADATA_STORE } from './audio.constants';
 import { getExtensionFromMime } from '@utils/audio.util';
@@ -15,21 +15,25 @@ export class AudioService {
     private readonly metadataStore: IAudioMetadataStore, // 현재 LocalJsonMetadataStoreService
   ) {}
 
+  getAbsoluteFilePath(fileName: string): string {
+    return this.audioStorage.getAbsoluteFilePath(fileName);
+  }
+
   /**
    * 오디오 파일을 저장하고 메타데이터를 생성합니다.
    * @param uuid
    * @param file 클라이언트로부터 받은 Audio 파일
    */
   async uploadAudio(uuid: string, file: Express.Multer.File): Promise<AudioMetadata> {
-    const filePath = await this.audioStorage.uploadAudio(uuid, file.buffer, file.mimetype);
+    const fileName = await this.audioStorage.uploadAudio(uuid, file.buffer, file.mimetype);
     const extension = getExtensionFromMime(file.mimetype);
 
     const metadata: AudioMetadata = {
       uuid,
-      name: 'New Recoding' + uuid.substring(0, 4), // 임시 이름, 실제로는 클라이언트에서 받아야 함
+      title: 'New Recoding' + uuid.substring(0, 4), // 임시 이름, 실제로는 클라이언트에서 받아야 함
       mimeType: file.mimetype,
       size: file.size,
-      filePath,
+      fileName,
       extension,
       uploadedAt: new Date(),
     };
@@ -66,6 +70,6 @@ export class AudioService {
    * 새로운 오디오 목록을 조회합니다.
    */
   getNewRecordings(after: string): AudioMetadata[] {
-    return this.metadataStore.getNewRecordings(after);
+    return this.metadataStore.getRecordings(after);
   }
 }
