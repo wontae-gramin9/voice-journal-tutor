@@ -3,30 +3,26 @@
     <audio
       class="audio-display__player"
       #audioElement
-      [src]="playbackUrl"
-      (timeupdate)="updateCurrentPlaybackTime($event)"
+      [src]="audioFileContext.value.objectUrl"
+      (timeupdate)="updateSlider($event)"
       preload="auto"></audio>
     <input
       type="range"
       min="0"
       [max]="audioElement.duration"
       step="0.1"
-      [value]="currentPlaybackTime()"
-      (touchStart)="onSliderStart()"
-      (mousedown)="onSliderStart()"
+      [(ngModel)]="currentSecond"
       (change)="onSliderChange($event)"
       class="audio-slider" />
-    @if (metadata) {
-      <div class="audio-display__info">
-        <p class="audio-display__info--audioname">
-          {{ metadata.fileName }}
-        </p>
-        <p class="audio-display__info--time">
-          <span>{{ currentPlaybackTime() | formatSecond }}</span> /
-          <span>{{ audioDuration() | formatSecond }}</span>
-        </p>
-      </div>
-    }
+    <div class="audio-display__info">
+      <p class="audio-display__info--audioname">
+        {{ audioFileContext.value.fileName }}
+      </p>
+      <p class="audio-display__info--time">
+        <span>{{ currentSecond | formatSecond }}</span> /
+        <span>{{ audioDuration() | formatSecond }}</span>
+      </p>
+    </div>
 
     <div class="audio-display__controls">
       <app-icon-button

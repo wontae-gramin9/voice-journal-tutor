@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment.development';
 import { BehaviorSubject } from 'rxjs';
-import { AudioInfo, AudioMetadata } from 'app/types/audio.type';
 
 export interface AudioFile {
   objectUrl: string;
@@ -22,26 +21,15 @@ export class AudioService {
 
   recognizedAudioText$ = new BehaviorSubject<string>('');
 
-  // GET /audio/:id
-  getAudioInfo(uuid: string) {
-    return this.http.get<AudioInfo>(`${this.audioApiUrl}/${uuid}`);
+  generateAudioFilename() {
+    return `recording-${new Date().toLocaleString()}.mp3`;
   }
 
-  // POST /audio/:id
-  uploadAudio(uuid: string, file: File) {
+  uploadAudio(file: File) {
+    // Observable 반환
     const formData = new FormData();
-    // NestJs Controller FileInterceptor에서 audioFile로 받도록 되어있음
-    formData.append('audioFile', file);
-    return this.http.post<AudioMetadata>(
-      `${this.audioApiUrl}/${uuid}`,
-      formData
-    );
-  }
-
-  // GET /audio/list?after=IS0_DATE
-  getRecordingMetadataList(after: string) {
-    return this.http.get<AudioMetadata[]>(`${this.audioApiUrl}/list`, {
-      params: { after },
-    });
+    formData.append('file', file);
+    // 반환하는 타입 잘 봐야함
+    return this.http.post(this.audioApiUrl, formData);
   }
 }

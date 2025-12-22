@@ -2,7 +2,6 @@ import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import type { IAudioStorage, IAudioMetadataStore, AudioMetadata } from './interfaces/audio-storage.interface';
 import { AUDIO_STORAGE_SERVICE, AUDIO_METADATA_STORE } from './audio.constants';
 import { getExtensionFromMime } from '@utils/audio.util';
-import { ReadStream } from 'fs';
 
 @Injectable()
 export class AudioService {
@@ -61,8 +60,8 @@ export class AudioService {
    * 로컬파일 시스템에서만 사용되며, Azure 환경에서는 URL로 대체함
    * @param filePath
    */
-  getAudioFileStream(filePath: string): ReadStream {
-    if (this.audioStorage.getAudioFileStream) return this.audioStorage.getAudioFileStream(filePath) as ReadStream;
+  getAudioFileStream(filePath: string): NodeJS.ReadableStream {
+    if (this.audioStorage.getAudioFileStream) return this.audioStorage.getAudioFileStream(filePath);
     throw new Error(`Streaming not supported in current storage implementation`);
   }
 
