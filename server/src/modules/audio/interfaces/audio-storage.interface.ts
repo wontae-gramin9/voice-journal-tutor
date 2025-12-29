@@ -1,5 +1,4 @@
 export interface IAudioStorage {
-  getAbsoluteFilePath(fileName: string): string;
   /**
    * @param uuid 고유 ID (파일 이름으로도 사용)
    * @param fileData 파일 버퍼 혹은 스트림
@@ -20,7 +19,7 @@ export interface IAudioStorage {
    * @param uuid 오디오 ID
    * @returns 파일 스트림
    */
-  getAudioFileStream?(uuid: string): NodeJS.ReadableStream;
+  getAudioFileStream?(uuid: string): Promise<NodeJS.ReadableStream>;
 }
 
 export interface IAudioMetadataStore {
@@ -33,13 +32,13 @@ export interface IAudioMetadataStore {
    * 현재 json 파일에서 동기적으로 메타데이터를 조회
    * @param uuid 고유 오디오 ID
    */
-  getMetadata(uuid: string): AudioMetadata | null;
+  getMetadata(uuid: string): Promise<AudioMetadata>;
 
   /**
    * 현재 json 파일에서 동기적으로 메타데이터를 조회
    * @param after 기준날짜 (ISO 문자열)
    */
-  getRecordings(after: string): AudioMetadata[];
+  getMetadatas(after: string): Promise<AudioMetadata[]>;
 }
 
 export class AudioMetadata {
