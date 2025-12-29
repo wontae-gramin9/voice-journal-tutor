@@ -1,7 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { IAudioStorage } from '@modules/audio/interfaces/audio-storage.interface';
-import { getSafeIsoTimestamp } from '@utils/time.util';
-import { getExtensionFromMime } from '@utils/audio.util';
+import { generateFileName, getExtensionFromMime } from '@utils/audio.util';
 import { BlobServiceClient, ContainerClient } from '@azure/storage-blob';
 import { ConfigService } from '@nestjs/config/dist/config.service';
 
@@ -18,13 +17,9 @@ export class AzureBlobStorageService implements IAudioStorage {
     this.containerClient = this.blobServiceClient.getContainerClient(containerName!);
   }
 
-  private generateFileName(uuid: string, extension: string): string {
-    return `${uuid}_${getSafeIsoTimestamp(new Date())}${extension}`;
-  }
-
   async uploadAudio(uuid: string, fileData: Buffer, mimeType: string): Promise<string> {
     const extension = getExtensionFromMime(mimeType);
-    const fileName = this.generateFileName(uuid, extension);
+    const fileName = generateFileName(uuid, extension);
     const blockBlobClient = this.containerClient.getBlockBlobClient(fileName);
     await blockBlobClient.uploadData(fileData, {
       blobHTTPHeaders: { blobContentType: mimeType },

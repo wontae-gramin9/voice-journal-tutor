@@ -1,4 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
+import { getSafeIsoTimestamp } from './time.util';
 
 export const MIME_TO_EXTENSION = {
   'audio/mpeg': '.mp3',
@@ -14,4 +15,8 @@ export function getExtensionFromMime(mimeType: string): string {
   if (!extension) throw new BadRequestException('Unsupported audio format');
 
   return extension;
+}
+
+export function generateFileName(uuid: string, extension: string): string {
+  return `${uuid}_${getSafeIsoTimestamp(new Date())}${extension}`;
 }
