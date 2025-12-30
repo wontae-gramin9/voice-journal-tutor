@@ -22,17 +22,17 @@ export class AudioController {
 
   // GET /audio/list?after=ISO_DATE
   @Get('list')
-  getRecordings(@Query('after') after: string): AudioMetadata[] {
+  async getMetadatas(@Query('after') after: string): Promise<AudioMetadata[]> {
     if (!after) {
       const defaultDateOneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-      return this.audioService.getNewRecordings(defaultDateOneDayAgo);
+      return await this.audioService.getMetadatas(defaultDateOneDayAgo);
     }
-    return this.audioService.getNewRecordings(after);
+    return await this.audioService.getMetadatas(after);
   }
 
   @Get(':uuid')
-  getAudioInfo(@Param('uuid') uuid: string) {
-    return this.audioService.getAudioInfo(uuid);
+  async getAudioInfo(@Param('uuid') uuid: string) {
+    return await this.audioService.getAudioInfo(uuid);
   }
 
   @Post('/:uuid')
@@ -46,9 +46,10 @@ export class AudioController {
 
   // 추가 엔드포인트: 로컬 환경에서 재생 URL이 API 경로인 경우
   @Get('play/:uuid')
-  streamAudio(@Param('uuid') uuid: string, @Res() res: Response) {
-    const { metadata } = this.audioService.getAudioInfo(uuid);
-    const filePath = this.audioService.getAbsoluteFilePath(metadata.fileName);
-    return res.sendFile(filePath, { headers: { 'Content-Type': metadata.mimeType } });
+  async streamAudio(@Param('uuid') uuid: string, @Res() res: Response) {
+    const { metadata } = await this.audioService.getAudioInfo(uuid);
+    const audioFileStream = await this.audioService.getAudioFileStream(metadata.fileName);
+    res.setHeader('Content-Type', metadata.mimeType);
+    audioFileStream.pipe(res);
   }
 }

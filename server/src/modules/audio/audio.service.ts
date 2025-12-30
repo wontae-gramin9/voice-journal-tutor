@@ -16,10 +16,6 @@ export class AudioService {
     private readonly metadataStore: IAudioMetadataStore, // 현재 LocalJsonMetadataStoreService
   ) {}
 
-  getAbsoluteFilePath(fileName: string): string {
-    return this.audioStorage.getAbsoluteFilePath(fileName);
-  }
-
   /**
    * 오디오 파일을 저장하고 메타데이터를 생성합니다.
    * @param uuid
@@ -47,8 +43,8 @@ export class AudioService {
    * Promise 이전에.
    * @param uuid
    */
-  getAudioInfo(uuid: string): { metadata: AudioMetadata; playbackUrl: string } {
-    const metadata = this.metadataStore.getMetadata(uuid);
+  async getAudioInfo(uuid: string): Promise<{ metadata: AudioMetadata; playbackUrl: string }> {
+    const metadata = await this.metadataStore.getMetadata(uuid);
     if (!metadata) {
       throw new NotFoundException(`Audio with ID ${uuid} not found`);
     }
@@ -61,8 +57,9 @@ export class AudioService {
    * 로컬파일 시스템에서만 사용되며, Azure 환경에서는 URL로 대체함
    * @param filePath
    */
-  getAudioFileStream(filePath: string): ReadStream {
-    if (this.audioStorage.getAudioFileStream) return this.audioStorage.getAudioFileStream(filePath) as ReadStream;
+  async getAudioFileStream(filePath: string): Promise<ReadStream> {
+    if (this.audioStorage.getAudioFileStream)
+      return (await this.audioStorage.getAudioFileStream(filePath)) as ReadStream;
     throw new Error(`Streaming not supported in current storage implementation`);
   }
 
@@ -70,7 +67,7 @@ export class AudioService {
    * GET /audio/new/list?after=ISO_DATE
    * 새로운 오디오 목록을 조회합니다.
    */
-  getNewRecordings(after: string): AudioMetadata[] {
-    return this.metadataStore.getRecordings(after);
+  async getMetadatas(after: string): Promise<AudioMetadata[]> {
+    return await this.metadataStore.getMetadatas(after);
   }
 }
