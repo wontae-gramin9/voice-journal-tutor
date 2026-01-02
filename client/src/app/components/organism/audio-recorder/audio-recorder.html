@@ -1,29 +1,25 @@
 <app-box>
   <div class="audio-recorder">
-    @if (isRecording) {
-      @if (isPaused) {
+    @if (isRecording$ | async) {
+      @if (isPaused$ | async) {
         <app-icon-button
-          (click)="resumeRecording()"
+          (click)="resume()"
           iconName="restart_alt"></app-icon-button>
       } @else {
         <app-icon-button
-          (click)="pauseRecording()"
+          (click)="pause()"
           iconName="pause_circle"></app-icon-button>
       }
-      <app-icon-button
-        (click)="stopRecording()"
-        iconName="stop"></app-icon-button>
+      <app-icon-button (click)="stop()" iconName="stop"></app-icon-button>
     } @else {
-      <app-icon-button
-        (click)="startRecording()"
-        iconName="mic"></app-icon-button>
+      <app-icon-button (click)="start()" iconName="mic"></app-icon-button>
 
-      @if (isFinished) {
+      @if (isFinished$ | async) {
         <app-icon-button
           (click)="uploadRecording()"
           iconName="upload"></app-icon-button>
       }
     }
   </div>
-  <div class="audio-preview">{{ audioFileContext.value.fileName }}</div>
+  <div class="audio-preview">{{ generatedFileName$ | async }}</div>
 </app-box>

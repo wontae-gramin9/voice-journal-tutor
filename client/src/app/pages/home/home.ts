@@ -17,7 +17,6 @@ import { take } from 'rxjs';
 export class Home implements OnInit {
   private audioService = inject(AudioService);
   private router = inject(Router);
-  recordedAudioUrl = this.audioService.audioFile;
   audioIDs!: string[];
 
   ngOnInit() {

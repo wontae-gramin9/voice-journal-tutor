@@ -1,101 +1,38 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { IconButton } from '@components/common/icon-button/icon-button';
 import { Box } from '@components/common/box/box';
 import { AudioService } from '@services/audio.service';
 import { CommonModule } from '@angular/common';
-import { v4 as uuidv4 } from 'uuid';
 @Component({
   selector: 'app-audio-recorder',
   imports: [IconButton, Box, CommonModule],
   templateUrl: './audio-recorder.html',
   styleUrl: './audio-recorder.scss',
 })
-export class AudioRecorder implements OnDestroy {
+export class AudioRecorder {
   private audioService = inject(AudioService);
-  private mediaRecorder!: MediaRecorder;
-  private audioChunks: Blob[] = [];
-  private stream!: MediaStream;
-  audioFileContext = this.audioService.audioFile;
-  isRecording = false;
-  isFinished = false;
-  isPaused = false;
+  generatedFileName$ = this.audioService.generatedFileName$;
+  isRecording$ = this.audioService.isRecording$;
+  isPaused$ = this.audioService.isPaused$;
+  isFinished$ = this.audioService.isFinished$;
 
-  ngOnDestroy(): void {
-    this.audioFileContext.next({ objectUrl: '', fileName: '' });
+  async start() {
+    await this.audioService.startRecording();
   }
 
-  async startRecording() {
-    this.audioFileContext.next({ objectUrl: '', fileName: '' });
-    try {
-      this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      this.mediaRecorder = new MediaRecorder(this.stream);
-      this.audioChunks = [];
-
-      this.mediaRecorder.addEventListener('dataavailable', e =>
-        this.audioChunks.push(e.data)
-      );
-      this.mediaRecorder.addEventListener('stop', () => {
-        const audioBlob = new Blob(this.audioChunks, {
-          type: this.mediaRecorder.mimeType, // 타입을 꼭 맞춰줘야 함
-        });
-        console.log(this.mediaRecorder.mimeType);
-
-        const uuid = uuidv4();
-        this.audioFileContext.next({
-          objectUrl: URL.createObjectURL(audioBlob),
-          fileName: uuid,
-        });
-      });
-
-      this.mediaRecorder.start();
-      this.isRecording = true;
-    } catch (error) {
-      alert('Microphone access is required to record audio.');
-      console.error('Error accessing microphone:', error);
-      return;
-    }
+  resume() {
+    this.audioService.resumeRecording();
   }
 
-  resumeRecording() {
-    this.mediaRecorder.resume();
-    this.isPaused = false;
+  pause() {
+    this.audioService.pauseRecording();
   }
 
-  pauseRecording() {
-    this.mediaRecorder.pause();
-    this.isPaused = true;
-  }
-
-  stopRecording() {
-    if (this.mediaRecorder && this.isRecording) {
-      this.mediaRecorder.stop();
-      this.isRecording = false;
-      this.isFinished = true;
-    }
+  stop() {
+    this.audioService.stopRecording();
   }
 
   uploadRecording() {
-    const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
-    const audioFile = new File(
-      [audioBlob],
-      this.audioFileContext.value.fileName,
-      {
-        type: this.mediaRecorder.mimeType,
-      }
-    );
-    const result = this.audioService
-      .uploadAudio(this.audioFileContext.value.fileName, audioFile)
-      .subscribe({
-        next: res => {
-          console.log('Audio uploaded successfully:', res);
-        },
-        error: err => {
-          console.error('Error uploading audio:', err);
-        },
-      });
-    this.audioFileContext.next({ objectUrl: '', fileName: '' });
-    this.isFinished = false;
-    this.isRecording = false;
-    return result;
+    this.audioService.uploadAudio();
   }
 }
