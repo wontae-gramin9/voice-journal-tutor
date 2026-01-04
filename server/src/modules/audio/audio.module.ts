@@ -4,6 +4,7 @@ import { AudioService } from './audio.service';
 import { AUDIO_METADATA_STORE, AUDIO_STORAGE_SERVICE } from './audio.constants';
 import { AzureBlobStorageService } from './services/azure-blob-storage.service';
 import { AzureCosmosMetadataStoreService } from './services/azure-cosmos-metadata-store.service';
+import { AudioGateway } from './audio.gateway';
 
 @Module({
   controllers: [AudioController],
@@ -14,6 +15,7 @@ import { AzureCosmosMetadataStoreService } from './services/azure-cosmos-metadat
       provide: AUDIO_METADATA_STORE,
       useClass: AzureCosmosMetadataStoreService,
     },
+    AudioGateway,
   ],
 })
 export class AudioModule {}

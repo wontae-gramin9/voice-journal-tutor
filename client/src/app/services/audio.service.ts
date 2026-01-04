@@ -4,6 +4,7 @@ import { environment } from '@environments/environment.development';
 import { BehaviorSubject } from 'rxjs';
 import { AudioInfo, AudioMetadata } from 'app/types/audio.type';
 import { v4 as uuidv4 } from 'uuid';
+import { AudioSocketService } from './audio-socket.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,22 +22,31 @@ export class AudioService {
   isFinished$ = new BehaviorSubject(false);
   recordingUuid = '';
   generatedFileName$ = new BehaviorSubject('');
+  private socketService = inject(AudioSocketService);
 
   async startRecording() {
     this.generatedFileName$.next('');
     try {
+      // 1. WebSocket 연결
+      this.socketService.connect();
+      // 2. 마이크 접근 권한 요청 및 MediaRecorder 생성
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       this.mediaRecorder = new MediaRecorder(stream);
       this.audioChunks = [];
 
-      this.mediaRecorder.addEventListener('dataavailable', e =>
-        this.audioChunks.push(e.data)
-      );
+      this.mediaRecorder.addEventListener('dataavailable', async e => {
+        const buffer = await e.data.arrayBuffer();
+        // 1. 소켓을 통해 서버로 전송
+        this.socketService.startStreaming(buffer);
+        // 2. 이후 업로드를 위해 배열에 저장
+        this.audioChunks.push(e.data);
+      });
       this.mediaRecorder.addEventListener('stop', () => {
         this.recordingUuid = uuidv4();
+        this.socketService.close();
       });
 
-      this.mediaRecorder.start();
+      this.mediaRecorder.start(250); // 250ms 단위로 데이터 수집
       this.isRecording$.next(true);
     } catch (error) {
       alert('Microphone access is required to record audio.');
@@ -89,6 +99,7 @@ export class AudioService {
       .subscribe({
         next: res => {
           console.log('Audio uploaded successfully:', res);
+          // 서비스도 여서 와야겠네
           this.generatedFileName$.next(res.fileName);
         },
         error: err => {
