@@ -50,16 +50,20 @@ export class AudioPlayer implements OnInit, AfterViewInit, OnDestroy {
     this.audioElement.src = this.playbackUrl;
     if (this.audioMetadataHandler) {
       this.audioElement.removeEventListener(
-        'loadedmetadata',
+        'durationchange',
         this.audioMetadataHandler
       );
     }
     this.audioMetadataHandler = () => {
-      this.audioDuration.set(this.audioElement.duration);
+      const duration = this.audioElement.duration;
+      if (duration && duration !== Infinity && !isNaN(duration)) {
+        this.audioDuration.set(duration);
+      }
     };
 
+    // loadedmetadata는 파일의 헤더만 읽기에, wav같은경우 duration이 Infinity로 나오는 문제가 있다.
     this.audioElement.addEventListener(
-      'loadedmetadata',
+      'durationchange',
       this.audioMetadataHandler
     );
     this.audioElement.load();
@@ -67,7 +71,7 @@ export class AudioPlayer implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.audioElement.removeEventListener(
-      'loadedmetadata',
+      'durationchange',
       this.audioMetadataHandler
     );
   }
