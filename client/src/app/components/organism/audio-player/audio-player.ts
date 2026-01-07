@@ -3,7 +3,6 @@ import {
   Component,
   ElementRef,
   inject,
-  OnDestroy,
   OnInit,
   signal,
   ViewChild,
@@ -22,7 +21,7 @@ import { AudioMetadata } from 'app/types/audio.type';
   templateUrl: './audio-player.html',
   styleUrl: './audio-player.scss',
 })
-export class AudioPlayer implements OnInit, AfterViewInit, OnDestroy {
+export class AudioPlayer implements OnInit, AfterViewInit {
   private route = inject(ActivatedRoute);
   private audioService = inject(AudioService);
   @ViewChild('audioElement') audioElementRef!: ElementRef<HTMLAudioElement>;
@@ -41,6 +40,7 @@ export class AudioPlayer implements OnInit, AfterViewInit, OnDestroy {
     this.audioId = this.route.snapshot.paramMap.get('audioId') || '';
     this.audioService.getAudioInfo(this.audioId).subscribe(audioInfo => {
       this.metadata = audioInfo.metadata;
+      this.audioDuration.set(audioInfo.metadata.duration);
       this.playbackUrl = `${environment.apiUrl}${audioInfo.playbackUrl}`;
     });
   }
@@ -48,32 +48,6 @@ export class AudioPlayer implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.audioElement = this.audioElementRef.nativeElement;
     this.audioElement.src = this.playbackUrl;
-    if (this.audioMetadataHandler) {
-      this.audioElement.removeEventListener(
-        'durationchange',
-        this.audioMetadataHandler
-      );
-    }
-    this.audioMetadataHandler = () => {
-      const duration = this.audioElement.duration;
-      if (duration && duration !== Infinity && !isNaN(duration)) {
-        this.audioDuration.set(duration);
-      }
-    };
-
-    // loadedmetadata는 파일의 헤더만 읽기에, wav같은경우 duration이 Infinity로 나오는 문제가 있다.
-    this.audioElement.addEventListener(
-      'durationchange',
-      this.audioMetadataHandler
-    );
-    this.audioElement.load();
-  }
-
-  ngOnDestroy(): void {
-    this.audioElement.removeEventListener(
-      'durationchange',
-      this.audioMetadataHandler
-    );
   }
 
   playAudio() {

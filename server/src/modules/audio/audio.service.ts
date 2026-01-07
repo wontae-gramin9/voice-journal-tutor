@@ -3,6 +3,7 @@ import type { IAudioStorage, IAudioMetadataStore, AudioMetadata } from './interf
 import { AUDIO_STORAGE_SERVICE, AUDIO_METADATA_STORE } from './audio.constants';
 import { getExtensionFromMime } from '@utils/audio.util';
 import { ReadStream } from 'fs';
+import { parseStream } from 'music-metadata';
 
 @Injectable()
 export class AudioService {
@@ -16,6 +17,12 @@ export class AudioService {
     private readonly metadataStore: IAudioMetadataStore, // 현재 LocalJsonMetadataStoreService
   ) {}
 
+  async getAudioDuration(uuid: string): Promise<number> {
+    const stream = await this.getAudioFileStream(uuid);
+    const metadata = await parseStream(stream, { mimeType: 'audio/wav' }, { duration: true });
+    return metadata.format.duration as number;
+  }
+
   /**
    * 오디오 파일을 저장하고 메타데이터를 생성합니다.
    * @param uuid
@@ -23,13 +30,16 @@ export class AudioService {
    */
   async uploadAudio(uuid: string, file: Express.Multer.File): Promise<AudioMetadata> {
     const fileName = await this.audioStorage.uploadAudio(uuid, file.buffer, file.mimetype);
+    // 여기네요
     const extension = getExtensionFromMime(file.mimetype);
+    const duration = await this.getAudioDuration(fileName);
 
     const metadata: AudioMetadata = {
       uuid,
       title: 'New Recoding' + uuid.substring(0, 4), // 임시 이름, 실제로는 클라이언트에서 받아야 함
       mimeType: file.mimetype,
       size: file.size,
+      duration,
       fileName,
       extension,
       uploadedAt: new Date(),

@@ -46,6 +46,7 @@ export class AudioMetadata {
   title: string;
   mimeType: string;
   size: number; // in bytes
+  duration: number; // in seconds
   fileName: string; // 상대경로로 변환한 이후에는 fileName만 필요
   extension: string;
   uploadedAt: Date;

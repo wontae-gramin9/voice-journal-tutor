@@ -29,6 +29,7 @@
     "@nestjs/platform-ws": "^11.1.11",
     "@nestjs/websockets": "^11.1.11",
     "microsoft-cognitiveservices-speech-sdk": "^1.47.0",
+    "music-metadata": "^11.10.5",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },
