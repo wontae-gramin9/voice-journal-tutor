@@ -13,13 +13,7 @@ export interface IAudioStorage {
    */
   getPlaybackUrl(uuid: string): string;
 
-  /**
-   * 로컬 환경에서만 사용될, 재생을 위한 파일 스트림을 반환합니다.
-   * (Azure 전환 시 이 메서드는 필요 없을 수 있습니다. URL로 대체될 수 있습니다.)
-   * @param uuid 오디오 ID
-   * @returns 파일 스트림
-   */
-  getAudioFileStream?(uuid: string): Promise<NodeJS.ReadableStream>;
+  getAudioFileStream?(fileName: string, start: number, chunkSize: number): Promise<NodeJS.ReadableStream>;
 }
 
 export interface IAudioMetadataStore {

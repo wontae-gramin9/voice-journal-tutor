@@ -17,8 +17,8 @@ export class AudioService {
     private readonly metadataStore: IAudioMetadataStore, // 현재 LocalJsonMetadataStoreService
   ) {}
 
-  async getAudioDuration(uuid: string): Promise<number> {
-    const stream = await this.getAudioFileStream(uuid);
+  async getAudioDuration(fileName: string, fileSize: number): Promise<number> {
+    const stream = await this.getAudioFileStream(fileName, 0, fileSize);
     const metadata = await parseStream(stream, { mimeType: 'audio/wav' }, { duration: true });
     return metadata.format.duration as number;
   }
@@ -30,9 +30,8 @@ export class AudioService {
    */
   async uploadAudio(uuid: string, file: Express.Multer.File): Promise<AudioMetadata> {
     const fileName = await this.audioStorage.uploadAudio(uuid, file.buffer, file.mimetype);
-    // 여기네요
     const extension = getExtensionFromMime(file.mimetype);
-    const duration = await this.getAudioDuration(fileName);
+    const duration = await this.getAudioDuration(fileName, file.size);
 
     const metadata: AudioMetadata = {
       uuid,
@@ -65,11 +64,12 @@ export class AudioService {
   /**
    * 오디오 파일의 스트림을 반환합니다.
    * 로컬파일 시스템에서만 사용되며, Azure 환경에서는 URL로 대체함
-   * @param filePath
+   * @param fileName
+   * uuid로 가져오네...?
    */
-  async getAudioFileStream(filePath: string): Promise<ReadStream> {
+  async getAudioFileStream(fileName: string, start: number, chunkSize: number): Promise<ReadStream> {
     if (this.audioStorage.getAudioFileStream)
-      return (await this.audioStorage.getAudioFileStream(filePath)) as ReadStream;
+      return (await this.audioStorage.getAudioFileStream(fileName, start, chunkSize)) as ReadStream;
     throw new Error(`Streaming not supported in current storage implementation`);
   }
 

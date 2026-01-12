@@ -35,14 +35,13 @@ export class AzureBlobStorageService implements IAudioStorage {
     return `/audio/play/${uuid}`;
   }
 
-  async getAudioFileStream(fileName: string): Promise<NodeJS.ReadWriteStream> {
+  async getAudioFileStream(fileName: string, start: number, fileSize: number): Promise<NodeJS.ReadWriteStream> {
     const blockBlobClient = this.containerClient.getBlockBlobClient(fileName);
     const exists = await blockBlobClient.exists();
     if (!exists) {
       throw new NotFoundException(`Audio file not found in Azure Blob Storage: ${fileName}`);
     }
-
-    const downloadResponse = await blockBlobClient.download();
+    const downloadResponse = await blockBlobClient.download(start, fileSize);
     return downloadResponse.readableStreamBody as NodeJS.ReadWriteStream;
   }
 }

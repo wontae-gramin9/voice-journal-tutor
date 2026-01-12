@@ -5,11 +5,12 @@ import {
   Param,
   Post,
   Query,
+  Req,
   Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import type { Response } from 'express';
+import type { Request, Response } from 'express';
 import { AudioService } from './audio.service';
 import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors/file.interceptor';
 import { AudioMetadata } from './interfaces/audio-storage.interface';
@@ -46,10 +47,35 @@ export class AudioController {
 
   // 추가 엔드포인트: 로컬 환경에서 재생 URL이 API 경로인 경우
   @Get('play/:uuid')
-  async streamAudio(@Param('uuid') uuid: string, @Res() res: Response) {
+  async streamAudio(@Param('uuid') uuid: string, @Req() req: Request, @Res() res: Response) {
     const { metadata } = await this.audioService.getAudioInfo(uuid);
-    const audioFileStream = await this.audioService.getAudioFileStream(metadata.fileName);
-    res.setHeader('Content-Type', metadata.mimeType);
-    audioFileStream.pipe(res);
+    // 브라우저가 보낸 Range header 파싱
+    const range = req.headers.range;
+    let httpStatus = 200;
+    let start = 0;
+    let fileSize = metadata.size;
+    if (range) {
+      httpStatus = 206;
+      // Range 헤더가 있는 경우 부분 스트리밍 처리
+      // 옮긴 슬라이더에 따라 특정 범위의 오디오를 재생하려면 Range 헤더를 처리하는 로직이 필요, HTTP 206 Partial Content
+      const parts = range.replace(/bytes=/, '').split('-');
+      start = parseInt(parts[0], 10);
+      const end = parts[1] ? parseInt(parts[1], 10) : metadata.size - 1;
+      fileSize = end - start + 1;
+      res.set({
+        'Content-Range': `bytes ${start}-${end}/${metadata.size}`,
+        'Accept-Ranges': 'bytes',
+      });
+    }
+    res.writeHead(httpStatus, {
+      'Content-Length': fileSize,
+      'Content-Type': metadata.mimeType,
+    });
+    const audioFileStream = await this.audioService.getAudioFileStream(metadata.fileName, start, fileSize);
+    audioFileStream.pipe(res); // 전체 스트림 전송, HTTP 200 OK
+    audioFileStream.on('error', (err) => {
+      throw new Error(`Error streaming audio file: ${err.message}`);
+      res.end();
+    });
   }
 }
